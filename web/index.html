@@ -1,0 +1,37 @@
+﻿<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#2f5bea">
+  <meta name="description" content="Convierte código legacy en reglas de negocio, código moderno y pruebas de equivalencia, con aprobación humana.">
+  <title>Copiloto de Modernización Legacy</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <a class="skip" href="#view">Saltar al contenido</a>
+  <header class="top">
+    <button id="btn-home" class="brand" type="button" title="Ir al inicio (cargar otro programa)">
+      <img src="/favicon.svg" alt="" width="34" height="34">
+      <span><b>Copiloto de Modernización</b><small>Del código antiguo al moderno, con pruebas y su aprobación</small></span>
+    </button>
+    <div class="top-right">
+      <div class="field"><label for="mode-select">Motor</label><select id="mode-select" title="Quién hace el análisis"></select></div>
+      <button id="btn-projects" class="btn ghost" type="button" aria-haspopup="dialog" aria-controls="drawer" title="Ver sus proyectos">📁 Proyectos <span id="proj-count" class="count">0</span></button>
+      <button id="btn-theme" class="btn ghost icon" type="button" aria-label="Cambiar entre modo claro y oscuro" title="Cambiar entre modo claro y oscuro">🌙</button>
+    </div>
+  </header>
+  <nav id="stepper" class="stepper" aria-label="Pasos del proceso"></nav>
+  <div id="banner" class="banner" role="status" aria-live="polite" hidden></div>
+  <main id="view"></main>
+  <button id="btn-guide" class="fab" type="button" aria-label="Guía: recorrido de esta pantalla" title="Guía: le explica esta pantalla"><span class="fab-q">?</span><span class="fab-t">Guía</span></button>
+  <div id="scrim" class="scrim" hidden></div>
+  <aside id="drawer" class="drawer" role="dialog" aria-label="Proyectos" hidden></aside>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <div id="pop" class="pop" role="dialog" aria-label="Ayuda" hidden></div>
+  <div id="tour" aria-live="polite"></div>
+  <script src="/guide.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

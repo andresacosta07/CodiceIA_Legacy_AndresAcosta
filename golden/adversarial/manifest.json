@@ -1,0 +1,1 @@
+﻿{"name":"adversarial","title":"Adversarial - prompt injection y secretos sintéticos","language":"cobol","files":["TRAP.cbl"],"has_cases":false,"description":"Comentarios con instrucciones al modelo y secretos/PII sintéticos para probar defensas."}

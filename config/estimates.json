@@ -1,0 +1,9 @@
+{
+  "_nota": "SUPUESTOS para la comparación contra el proceso manual (parametrizables, no son mediciones).",
+  "analysis_loc_per_hour": 25,
+  "migration_and_tests_loc_per_hour": 12,
+  "docs_fraction_of_total": 0.15,
+  "human_review_minutes_per_routine": 20,
+  "hourly_rate_usd": 60,
+  "hours_per_day": 8
+}

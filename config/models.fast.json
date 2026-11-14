@@ -1,0 +1,11 @@
+{
+  "_nota": "Perfil RÁPIDO opcional (ADR-018): se activa con COPILOT_PROFILE=fast o `py run.py --rapido`. Solo sobrescribe estas etapas; el resto se hereda de models.json. Cambiar el modelo cambia el hash de las grabaciones (cassettes): este perfil graba las suyas.",
+  "stages": {
+    "analyze":  {"model": "claude-sonnet-5-5", "effort": "low"},
+    "rules":    {"model": "claude-sonnet-5-5", "effort": "medium"},
+    "codegen":  {"model": "claude-sonnet-5-5", "effort": "low"},
+    "oracle":   {"model": "claude-sonnet-5-5", "effort": "medium"},
+    "qa_cases": {"model": "claude-haiku-5-5",  "effort": "low"},
+    "docs":     {"model": "claude-haiku-5-5",  "effort": "low"}
+  }
+}

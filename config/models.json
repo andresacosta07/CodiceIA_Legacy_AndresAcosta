@@ -1,0 +1,22 @@
+{
+  "_nota": "Modelo por etapa configurable (ADR-007). IDs verificados contra la referencia de la API de Claude (2026-11-13).",
+  "stages": {
+    "detect":   {"model": "claude-haiku-5-5",  "effort": "low"},
+    "analyze":  {"model": "claude-sonnet-5-5", "effort": "medium"},
+    "rules":    {"model": "claude-opus-5-5",   "effort": "medium"},
+    "design":   {"model": "claude-sonnet-5-5", "effort": "medium"},
+    "codegen":  {"model": "claude-sonnet-5-5", "effort": "medium"},
+    "autofix":  {"model": "claude-sonnet-5-5", "effort": "medium"},
+    "oracle":   {"model": "claude-opus-5-5",   "effort": "medium"},
+    "qa_cases": {"model": "claude-sonnet-5-5", "effort": "medium"},
+    "docs":     {"model": "claude-sonnet-5-5", "effort": "low"}
+  },
+  "pricing_usd_per_mtok": {
+    "claude-haiku-5-5":  {"in": 0.10, "out": 0.50},
+    "claude-sonnet-5-5": {"in": 2.00, "out": 10.00},
+    "claude-opus-5-5":   {"in": 4.00, "out": 20.00},
+    "claude-fable-5-2":  {"in": 8.00, "out": 40.00}
+  },
+  "use_server_fallbacks": true,
+  "max_source_chars": 400000
+}

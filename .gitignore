@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+data/
+reports/
+node_modules/
+.pytest_cache/
+.claude/
+.playwright-mcp/
+pw_*.png
+scratch_*

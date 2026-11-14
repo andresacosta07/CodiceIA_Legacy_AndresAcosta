@@ -1,0 +1,137 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. LOANAMRT.
+      *----------------------------------------------------------------
+      * CALCULO DE CUOTA MENSUAL - AMORTIZACION FRANCESA
+      * AUTOR ORIGINAL: DEPTO. CREDITOS (1998) - MODIF. VARIAS
+      * DATOS SINTETICOS - USO EXCLUSIVO DE DEMOSTRACION
+      *----------------------------------------------------------------
+       ENVIRONMENT DIVISION.
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+           SELECT LOAN-IN-FILE ASSIGN TO LOANIN
+               ORGANIZATION IS SEQUENTIAL.
+       DATA DIVISION.
+       FILE SECTION.
+       FD LOAN-IN-FILE.
+       01 LOAN-IN-REC               PIC X(80).
+       WORKING-STORAGE SECTION.
+           COPY LOANREC.
+       01 WS-DB-USER                PIC X(8)  VALUE 'LOANAPP'.
+       01 WS-DB-PASSWORD            PIC X(12) VALUE 'Pr0d#2019!x'.
+       01 WS-WORK.
+          05 WS-TERM-YEARS          PIC 9(3).
+          05 WS-MATURITY-AGE        PIC 9(3).
+          05 WS-RATE-MONTHLY        PIC 9V9(9).
+          05 WS-FACTOR              PIC 9(7)V9(9).
+          05 WS-INS-RATE            PIC 9V9(5).
+          05 WS-EOF-FLAG            PIC X     VALUE 'N'.
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           PERFORM READ-REQUEST
+           PERFORM VALIDATE-INPUT
+           IF LR-STATUS = 'REJECTED'
+              GO TO ERROR-EXIT
+           END-IF
+           PERFORM DETERMINE-RATE
+           IF LR-STATUS = 'REJECTED'
+              GO TO ERROR-EXIT
+           END-IF
+           PERFORM CALC-PAYMENT
+           PERFORM CALC-INSURANCE
+           PERFORM CALC-TOTALS
+           MOVE 'APPROVED' TO LR-STATUS
+           PERFORM WRITE-AUDIT
+           GOBACK.
+       READ-REQUEST.
+           OPEN INPUT LOAN-IN-FILE
+           READ LOAN-IN-FILE
+               AT END MOVE 'Y' TO WS-EOF-FLAG
+           END-READ
+           MOVE SPACES TO LR-STATUS
+           MOVE SPACES TO LR-ERROR-CODE
+           MOVE ZERO TO LR-MONTHLY-PAYMENT LR-INSURANCE
+           MOVE ZERO TO LR-TOTAL-INTEREST LR-TOTAL-PAID LR-ANNUAL-RATE
+           CLOSE LOAN-IN-FILE.
+       VALIDATE-INPUT.
+      *    REGLA: MONTO ENTRE 1,000.00 Y 500,000.00
+           IF LR-PRINCIPAL < 1000.00 OR LR-PRINCIPAL > 500000.00
+              MOVE 'REJECTED' TO LR-STATUS
+              MOVE 'E01' TO LR-ERROR-CODE
+           ELSE
+      *    REGLA: PLAZO ENTRE 6 Y 360 MESES
+              IF LR-TERM-MONTHS < 6 OR LR-TERM-MONTHS > 360
+                 MOVE 'REJECTED' TO LR-STATUS
+                 MOVE 'E02' TO LR-ERROR-CODE
+              ELSE
+      *    REGLA: EDAD AL VENCIMIENTO (ANOS ENTEROS) NO MAYOR A 75
+                 DIVIDE LR-TERM-MONTHS BY 12 GIVING WS-TERM-YEARS
+                 COMPUTE WS-MATURITY-AGE =
+                     LR-CUSTOMER-AGE + WS-TERM-YEARS
+                 IF WS-MATURITY-AGE > 75
+                    MOVE 'REJECTED' TO LR-STATUS
+                    MOVE 'E03' TO LR-ERROR-CODE
+                 END-IF
+              END-IF
+           END-IF.
+       DETERMINE-RATE.
+      *    REGLA: TASA ANUAL SEGUN PUNTAJE CREDITICIO
+           EVALUATE TRUE
+              WHEN LR-CREDIT-SCORE >= 750
+                 MOVE 0.0899 TO LR-ANNUAL-RATE
+              WHEN LR-CREDIT-SCORE >= 650
+                 MOVE 0.1299 TO LR-ANNUAL-RATE
+              WHEN LR-CREDIT-SCORE >= 550
+                 MOVE 0.1899 TO LR-ANNUAL-RATE
+              WHEN OTHER
+                 MOVE 'REJECTED' TO LR-STATUS
+                 MOVE 'E04' TO LR-ERROR-CODE
+           END-EVALUATE
+           IF LR-STATUS NOT = 'REJECTED'
+      *    REGLA: PROMOCION - 0.25 PUNTOS MENOS SI PUNTAJE >= 800
+      *           Y PLAZO <= 60 MESES
+              IF LR-CREDIT-SCORE >= 800 AND LR-TERM-MONTHS <= 60
+                 SUBTRACT 0.0025 FROM LR-ANNUAL-RATE
+              END-IF
+      *    REGLA: RECARGO DE 0.50 PUNTOS SI PLAZO MAYOR A 120 MESES
+              IF LR-TERM-MONTHS > 120
+                 ADD 0.0050 TO LR-ANNUAL-RATE
+              END-IF
+           END-IF.
+       CALC-PAYMENT.
+      *    TASA MENSUAL REDONDEADA A 9 DECIMALES
+           COMPUTE WS-RATE-MONTHLY ROUNDED = LR-ANNUAL-RATE / 12
+      *    FACTOR (1+I)^N REDONDEADO A 9 DECIMALES
+           COMPUTE WS-FACTOR ROUNDED =
+               (1 + WS-RATE-MONTHLY) ** LR-TERM-MONTHS
+      *    CUOTA = P * I * F / (F - 1), REDONDEADA A 2 DECIMALES
+           COMPUTE LR-MONTHLY-PAYMENT ROUNDED =
+               LR-PRINCIPAL * WS-RATE-MONTHLY * WS-FACTOR
+               / (WS-FACTOR - 1).
+       CALC-INSURANCE.
+      *    REGLA: SEGURO MENSUAL SOBRE SALDO INICIAL SEGUN EDAD
+           EVALUATE TRUE
+              WHEN LR-CUSTOMER-AGE < 40
+                 MOVE 0.00035 TO WS-INS-RATE
+              WHEN LR-CUSTOMER-AGE < 60
+                 MOVE 0.00055 TO WS-INS-RATE
+              WHEN OTHER
+                 MOVE 0.00095 TO WS-INS-RATE
+           END-EVALUATE
+           COMPUTE LR-INSURANCE ROUNDED = LR-PRINCIPAL * WS-INS-RATE.
+       CALC-TOTALS.
+           COMPUTE LR-TOTAL-INTEREST =
+               LR-MONTHLY-PAYMENT * LR-TERM-MONTHS - LR-PRINCIPAL
+           COMPUTE LR-TOTAL-PAID =
+               (LR-MONTHLY-PAYMENT + LR-INSURANCE) * LR-TERM-MONTHS.
+       WRITE-AUDIT.
+           EXEC SQL
+               INSERT INTO LOAN_AUDIT (STATUS, PRINCIPAL, PAYMENT)
+               VALUES (:LR-STATUS, :LR-PRINCIPAL, :LR-MONTHLY-PAYMENT)
+           END-EXEC.
+       ERROR-EXIT.
+           PERFORM WRITE-AUDIT
+           DISPLAY 'SOLICITUD RECHAZADA: ' LR-ERROR-CODE
+           GOBACK.
+       UNUSED-AUDIT-LOG.
+      *    PARRAFO HEREDADO SIN USO (CODIGO MUERTO)
+           DISPLAY 'AUDIT LEGACY ' LR-STATUS.

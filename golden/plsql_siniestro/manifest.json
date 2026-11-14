@@ -1,0 +1,1 @@
+﻿{"name":"plsql_siniestro","title":"PL/SQL - Liquidación de siniestros (con SQL dinámico inseguro)","language":"plsql","files":["PKG_SINIESTROS.sql"],"has_cases":false,"description":"Indemnización con deducible, límite de suma asegurada y alerta de fraude. Incluye SQL concatenado (hallazgo de seguridad)."}

@@ -1,0 +1,477 @@
+﻿[
+  {
+    "name": "nominal_score_alto",
+    "category": "R-RATE",
+    "input": {
+      "principal": "100000.00",
+      "term_months": "60",
+      "credit_score": "780",
+      "customer_age": "35"
+    },
+    "expected": {
+      "status": "APPROVED",
+      "error_code": "",
+      "annual_rate": "0.0899",
+      "monthly_payment": "2075.35",
+      "insurance": "35.00",
+      "total_interest": "24521.00",
+      "total_paid": "126621.00"
+    }
+  },
+  {
+    "name": "promocion_score_800_plazo_60",
+    "category": "R-PROMO",
+    "input": {
+      "principal": "250000.00",
+      "term_months": "60",
+      "credit_score": "820",
+      "customer_age": "45"
+    },
+    "expected": {
+      "status": "APPROVED",
+      "error_code": "",
+      "annual_rate": "0.0874",
+      "monthly_payment": "5158.10",
+      "insurance": "137.50",
+      "total_interest": "59486.00",
+      "total_paid": "317736.00"
+    }
+  },
+  {
+    "name": "sin_promocion_plazo_61",
+    "category": "R-PROMO",
+    "input": {
+      "principal": "250000.00",
+      "term_months": "61",
+      "credit_score": "820",
+      "customer_age": "45"
+    },
+    "expected": {
+      "status": "APPROVED",
+      "error_code": "",
+      "annual_rate": "0.0899",
+      "monthly_payment": "5120.97",
+      "insurance": "137.50",
+      "total_interest": "62379.17",
+      "total_paid": "320766.67"
+    }
+  },
+  {
+    "name": "recargo_plazo_121",
+    "category": "R-SURCHARGE",
+    "input": {
+      "principal": "180000.50",
+      "term_months": "121",
+      "credit_score": "700",
+      "customer_age": "30"
+    },
+    "expected": {
+      "status": "APPROVED",
+      "error_code": "",
+      "annual_rate": "0.1349",
+      "monthly_payment": "2729.13",
+      "insurance": "63.00",
+      "total_interest": "150224.23",
+      "total_paid": "337847.73"
+    }
+  },
+  {
+    "name": "recargo_no_aplica_plazo_120",
+    "category": "R-SURCHARGE",
+    "input": {
+      "principal": "180000.50",
+      "term_months": "120",
+      "credit_score": "700",
+      "customer_age": "30"
+    },
+    "expected": {
+      "status": "APPROVED",
+      "error_code": "",
+      "annual_rate": "0.1299",
+      "monthly_payment": "2686.54",
+      "insurance": "63.00",
+      "total_interest": "142384.30",
+      "total_paid": "329944.80"
+    }
+  },
+  {
+    "name": "score_medio",
+    "category": "R-RATE",
+    "input": {
+      "principal": "75000.00",
+      "term_months": "36",
+      "credit_score": "600",
+      "customer_age": "52"
+    },
+    "expected": {
+      "status": "APPROVED",
+      "error_code": "",
+      "annual_rate": "0.1899",
+      "monthly_payment": "2748.82",
+      "insurance": "41.25",
+      "total_interest": "23957.52",
+      "total_paid": "100442.52"
+    }
+  },
+  {
+    "name": "score_650_limite",
+    "category": "R-RATE",
+    "input": {
+      "principal": "75000.00",
+      "term_months": "36",
+      "credit_score": "650",
+      "customer_age": "52"
+    },
+    "expected": {
+      "status": "APPROVED",
+      "error_code": "",
+      "annual_rate": "0.1299",
+      "monthly_payment": "2526.69",
+      "insurance": "41.25",
+      "total_interest": "15960.84",
+      "total_paid": "92445.84"
+    }
+  },
+  {
+    "name": "score_749_limite",
+    "category": "R-RATE",
+    "input": {
+      "principal": "75000.00",
+      "term_months": "36",
+      "credit_score": "749",
+      "customer_age": "52"
+    },
+    "expected": {
+      "status": "APPROVED",
+      "error_code": "",
+      "annual_rate": "0.1299",
+      "monthly_payment": "2526.69",
+      "insurance": "41.25",
+      "total_interest": "15960.84",
+      "total_paid": "92445.84"
+    }
+  },
+  {
+    "name": "score_550_limite",
+    "category": "R-RATE",
+    "input": {
+      "principal": "9999.99",
+      "term_months": "12",
+      "credit_score": "550",
+      "customer_age": "29"
+    },
+    "expected": {
+      "status": "APPROVED",
+      "error_code": "",
+      "annual_rate": "0.1899",
+      "monthly_payment": "921.52",
+      "insurance": "3.50",
+      "total_interest": "1058.25",
+      "total_paid": "11100.24"
+    }
+  },
+  {
+    "name": "score_bajo_rechazo",
+    "category": "R-RATE",
+    "input": {
+      "principal": "50000.00",
+      "term_months": "24",
+      "credit_score": "549",
+      "customer_age": "40"
+    },
+    "expected": {
+      "status": "REJECTED",
+      "error_code": "E04",
+      "annual_rate": "0.0000",
+      "monthly_payment": "0.00",
+      "insurance": "0.00",
+      "total_interest": "0.00",
+      "total_paid": "0.00"
+    }
+  },
+  {
+    "name": "monto_minimo",
+    "category": "R-AMOUNT",
+    "input": {
+      "principal": "1000.00",
+      "term_months": "6",
+      "credit_score": "700",
+      "customer_age": "25"
+    },
+    "expected": {
+      "status": "APPROVED",
+      "error_code": "",
+      "annual_rate": "0.1299",
+      "monthly_payment": "173.04",
+      "insurance": "0.35",
+      "total_interest": "38.24",
+      "total_paid": "1040.34"
+    }
+  },
+  {
+    "name": "monto_bajo_rechazo",
+    "category": "R-AMOUNT",
+    "input": {
+      "principal": "999.99",
+      "term_months": "12",
+      "credit_score": "700",
+      "customer_age": "25"
+    },
+    "expected": {
+      "status": "REJECTED",
+      "error_code": "E01",
+      "annual_rate": "0.0000",
+      "monthly_payment": "0.00",
+      "insurance": "0.00",
+      "total_interest": "0.00",
+      "total_paid": "0.00"
+    }
+  },
+  {
+    "name": "monto_maximo",
+    "category": "R-AMOUNT",
+    "input": {
+      "principal": "500000.00",
+      "term_months": "240",
+      "credit_score": "760",
+      "customer_age": "28"
+    },
+    "expected": {
+      "status": "APPROVED",
+      "error_code": "",
+      "annual_rate": "0.0949",
+      "monthly_payment": "4657.39",
+      "insurance": "175.00",
+      "total_interest": "617773.60",
+      "total_paid": "1159773.60"
+    }
+  },
+  {
+    "name": "monto_alto_rechazo",
+    "category": "R-AMOUNT",
+    "input": {
+      "principal": "500000.01",
+      "term_months": "240",
+      "credit_score": "760",
+      "customer_age": "28"
+    },
+    "expected": {
+      "status": "REJECTED",
+      "error_code": "E01",
+      "annual_rate": "0.0000",
+      "monthly_payment": "0.00",
+      "insurance": "0.00",
+      "total_interest": "0.00",
+      "total_paid": "0.00"
+    }
+  },
+  {
+    "name": "plazo_5_rechazo",
+    "category": "R-TERM",
+    "input": {
+      "principal": "20000.00",
+      "term_months": "5",
+      "credit_score": "700",
+      "customer_age": "30"
+    },
+    "expected": {
+      "status": "REJECTED",
+      "error_code": "E02",
+      "annual_rate": "0.0000",
+      "monthly_payment": "0.00",
+      "insurance": "0.00",
+      "total_interest": "0.00",
+      "total_paid": "0.00"
+    }
+  },
+  {
+    "name": "plazo_361_rechazo",
+    "category": "R-TERM",
+    "input": {
+      "principal": "20000.00",
+      "term_months": "361",
+      "credit_score": "700",
+      "customer_age": "30"
+    },
+    "expected": {
+      "status": "REJECTED",
+      "error_code": "E02",
+      "annual_rate": "0.0000",
+      "monthly_payment": "0.00",
+      "insurance": "0.00",
+      "total_interest": "0.00",
+      "total_paid": "0.00"
+    }
+  },
+  {
+    "name": "plazo_maximo_360",
+    "category": "R-TERM",
+    "input": {
+      "principal": "20000.00",
+      "term_months": "360",
+      "credit_score": "700",
+      "customer_age": "30"
+    },
+    "expected": {
+      "status": "APPROVED",
+      "error_code": "",
+      "annual_rate": "0.1349",
+      "monthly_payment": "228.93",
+      "insurance": "7.00",
+      "total_interest": "62414.80",
+      "total_paid": "84934.80"
+    }
+  },
+  {
+    "name": "edad_vencimiento_75_ok",
+    "category": "R-AGE",
+    "input": {
+      "principal": "30000.00",
+      "term_months": "119",
+      "credit_score": "700",
+      "customer_age": "66"
+    },
+    "expected": {
+      "status": "APPROVED",
+      "error_code": "",
+      "annual_rate": "0.1299",
+      "monthly_payment": "449.60",
+      "insurance": "28.50",
+      "total_interest": "23502.40",
+      "total_paid": "56893.90"
+    }
+  },
+  {
+    "name": "edad_vencimiento_76_rechazo",
+    "category": "R-AGE",
+    "input": {
+      "principal": "30000.00",
+      "term_months": "120",
+      "credit_score": "700",
+      "customer_age": "66"
+    },
+    "expected": {
+      "status": "REJECTED",
+      "error_code": "E03",
+      "annual_rate": "0.0000",
+      "monthly_payment": "0.00",
+      "insurance": "0.00",
+      "total_interest": "0.00",
+      "total_paid": "0.00"
+    }
+  },
+  {
+    "name": "truncamiento_anios_11_meses",
+    "category": "R-AGE",
+    "input": {
+      "principal": "30000.00",
+      "term_months": "143",
+      "credit_score": "700",
+      "customer_age": "64"
+    },
+    "expected": {
+      "status": "APPROVED",
+      "error_code": "",
+      "annual_rate": "0.1349",
+      "monthly_payment": "422.72",
+      "insurance": "28.50",
+      "total_interest": "30448.96",
+      "total_paid": "64524.46"
+    }
+  },
+  {
+    "name": "seguro_menor_40",
+    "category": "R-INSURANCE",
+    "input": {
+      "principal": "123456.78",
+      "term_months": "48",
+      "credit_score": "700",
+      "customer_age": "39"
+    },
+    "expected": {
+      "status": "APPROVED",
+      "error_code": "",
+      "annual_rate": "0.1299",
+      "monthly_payment": "3311.42",
+      "insurance": "43.21",
+      "total_interest": "35491.38",
+      "total_paid": "161022.24"
+    }
+  },
+  {
+    "name": "seguro_40_a_59",
+    "category": "R-INSURANCE",
+    "input": {
+      "principal": "123456.78",
+      "term_months": "48",
+      "credit_score": "700",
+      "customer_age": "40"
+    },
+    "expected": {
+      "status": "APPROVED",
+      "error_code": "",
+      "annual_rate": "0.1299",
+      "monthly_payment": "3311.42",
+      "insurance": "67.90",
+      "total_interest": "35491.38",
+      "total_paid": "162207.36"
+    }
+  },
+  {
+    "name": "seguro_60_o_mas",
+    "category": "R-INSURANCE",
+    "input": {
+      "principal": "123456.78",
+      "term_months": "48",
+      "credit_score": "700",
+      "customer_age": "60"
+    },
+    "expected": {
+      "status": "APPROVED",
+      "error_code": "",
+      "annual_rate": "0.1299",
+      "monthly_payment": "3311.42",
+      "insurance": "117.28",
+      "total_interest": "35491.38",
+      "total_paid": "164577.60"
+    }
+  },
+  {
+    "name": "redondeo_mitad_arriba",
+    "category": "R-ROUNDING",
+    "input": {
+      "principal": "33333.33",
+      "term_months": "7",
+      "credit_score": "700",
+      "customer_age": "33"
+    },
+    "expected": {
+      "status": "APPROVED",
+      "error_code": "",
+      "annual_rate": "0.1299",
+      "monthly_payment": "4970.31",
+      "insurance": "11.67",
+      "total_interest": "1458.84",
+      "total_paid": "34873.86"
+    }
+  },
+  {
+    "name": "redondeo_cuota_larga",
+    "category": "R-ROUNDING",
+    "input": {
+      "principal": "477777.77",
+      "term_months": "359",
+      "credit_score": "560",
+      "customer_age": "20"
+    },
+    "expected": {
+      "status": "APPROVED",
+      "error_code": "",
+      "annual_rate": "0.1949",
+      "monthly_payment": "7783.86",
+      "insurance": "167.22",
+      "total_interest": "2316627.97",
+      "total_paid": "2854437.72"
+    }
+  }
+]

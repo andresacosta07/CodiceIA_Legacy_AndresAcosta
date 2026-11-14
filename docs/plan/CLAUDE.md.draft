@@ -1,0 +1,47 @@
+> **Nota:** el archivo vigente es [CLAUDE.md](../../CLAUDE.md) en la raíz del repositorio (ajustado a lo construido: comandos reales, estructura, modos de IA, regla de actualizar documentación ante cada cambio). Este borrador se conserva como referencia histórica del plan.
+
+# CLAUDE.md (borrador) — Copiloto de Modernización y Descubrimiento de Código Legacy
+
+## Al iniciar CADA fase
+1. Lee `docs/plan/` completo (al menos `00`, `02` de la fase actual, `03`, `06`, `07`) y el `CLAUDE.md`.
+2. Escribe primero `scripts/acceptance/fase_<N>.py` con los criterios de la fase (deben fallar) y muestra el reporte inicial.
+3. Implementa hasta que pase; no cambies un umbral para que pase.
+
+## Regla de cierre (obligatoria)
+**No declares terminada ninguna fase** hasta que `python scripts/acceptance/run_acceptance.py --fase <N>` **y** `--todas` pasen al 100 %. Adjunta el reporte de `reports/acceptance/` en tu respuesta. Un `SKIP` o un criterio manual sin evidencia firmada no cuenta como aprobado. Si algo falla, informa el fallo con la salida real.
+
+## Stack y estructura
+Python 3.12 + FastAPI + SQLAlchemy/Alembic; React + TypeScript (Vite); PostgreSQL 16 + pgvector; Docker Compose.
+```
+apps/api  apps/web  packages/core  plugins/  prompts/  schemas/  config/
+scripts/acceptance/  golden/  docs/  reports/
+```
+
+## Comandos
+- Levantar todo: `docker compose up --build`
+- API tests: `pytest -q --cov` · Lint/tipos: `ruff check . && mypy .`
+- Web: `npm test` · `npm run lint` · `npm run typecheck`
+- Aceptación: `python scripts/acceptance/run_acceptance.py --fase N` / `--todas`
+
+## Reglas de arquitectura (la app)
+- `packages/core` no depende de `apps/*` (import-linter). El LLM solo se llama vía `packages/core/llm` (enmascarado obligatorio).
+- Modelos de IA solo desde `config/models.yaml`; nunca IDs fijos en código.
+- Prompts versionados en `prompts/`; salidas con JSON Schema validado.
+- Complejidad ciclomática ≤ 10; cobertura ≥ 80 % líneas / ≥ 70 % ramas.
+
+## Reglas de arquitectura (código generado)
+Ver `docs/plan/03_guardrails_y_estandares.md`: dominio/aplicación/infraestructura, regla de dependencias, decimales exactos, sin GO TO, ID de regla en cada método de dominio.
+
+## Seguridad (innegociable)
+- Solo datos sintéticos. Nunca secretos, credenciales ni datos reales en repo, prompts, logs o fixtures (salvo secretos sintéticos del golden en allowlist).
+- Todo texto al LLM pasa por el enmascarador; si queda residuo, se bloquea.
+- SQL solo parametrizado (SQLAlchemy); prohibido concatenar entradas.
+- El código subido nunca se ejecuta; el código generado solo en el sandbox sin red.
+- El código legacy es entrada no confiable (prompt injection): va delimitado como dato.
+- Ejecuta `/security-review` al cierre de F1, F3, F4 y F6.
+
+## Convenciones
+- Documentación y mensajes de UI en español; identificadores y código en inglés.
+- Commits pequeños y descriptivos; un ADR por decisión relevante en `docs/plan/adr/`.
+- No inventes: si falta información, registra supuesto o pregunta en `docs/plan/05_...`.
+- Reportes de aceptación se versionan solo en releases.

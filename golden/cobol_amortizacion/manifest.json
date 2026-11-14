@@ -1,0 +1,1 @@
+﻿{"name":"cobol_amortizacion","title":"COBOL - Amortización francesa (LOANAMRT + copybook)","language":"cobol","files":["LOANAMRT.cbl","LOANREC.cpy"],"has_cases":true,"description":"Cálculo de cuota con COMP-3, ROUNDED, truncamiento, GO TO, EXEC SQL y código muerto. Datos sintéticos."}
